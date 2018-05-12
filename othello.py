@@ -14,9 +14,12 @@ def init_board(n=8):
 class OthelloGame:
     def __init__(self, n=8):
         self.board = init_board(n)
+
         self.score = {'Player1': 2, 'Player2': 2}
-        print(np.unique(self.board, return_counts=True))
-        # filter the print // is it even possible :/
+        # This prints the scores of the 2 players
+        print(np.count_nonzero(self.board == 1))
+        print(np.count_nonzero(self.board == -1))
+
     def update_score(self):
         np.unique(self.board)
 
