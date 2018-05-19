@@ -23,6 +23,7 @@ class OthelloGame:
         return
 
     def is_valid(self, x, y, p):
+        
         return
 
 
