@@ -14,25 +14,22 @@ def init_board(n=8):
 class OthelloGame:
     def __init__(self, n=8):
         self.board = init_board(n)
-
         self.score = {'Player1': 2, 'Player2': 2}
-        # This prints the scores of the 2 players
-        print(np.count_nonzero(self.board == 1))
-        print(np.count_nonzero(self.board == -1))
+        return
 
     def update_score(self):
-        np.unique(self.board)
+        self.score['Player1'] = np.count_nonzero(self.board == 1)
+        self.score['Player2'] = np.count_nonzero(self.board == -1)
+        return
 
-
-
+    def is_valid(self, x, y, p):
+        return
 
 
 def main():
 
     game = OthelloGame()
     return
-
-
 
 
 if __name__ == '__main__':
