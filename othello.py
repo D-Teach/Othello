@@ -15,6 +15,7 @@ def init_board(n=8):
 
 def dummy_board():
 
+        # First number: x, second number: y
         board = np.zeros(shape=(8, 8), dtype=np.int)
         board[2][6] = 1
         board[3][6] = -1
@@ -56,21 +57,8 @@ class OthelloGame:
         # South-East
         if x < self.n-1 and y < self.n-1 and self.board[x+1][y+1] == -1 * p:
             return
-        # west
-        if x < 0 and self.board[x-1][y] == -1 * p:
-            return
-        # South-West
-        if x < 0 and y < 0 and self.board[x-1][y-1] == -1 * p:
-            return
-        # west
-        if x < 0 and self.board[x-1][y] == -1 * p:
-            return
-        # south
-        if x < self.n-1 and self.board[x-1][y] == -1 * p:
-            return
-        # south-west
-        if x < self.n-1 and y < self.n-1 and self.board[x-1][y-1] == -1 * p:
-            return
+        # South
+        if x < self.n+1
         return True
 
 
