@@ -58,7 +58,18 @@ class OthelloGame:
         if x < self.n-1 and y < self.n-1 and self.board[x+1][y+1] == -1 * p:
             return
         # South
-        if x < self.n+1
+        if x < self.n-1 and self.board[x][y-1] == -1 * p:
+            return
+        # South-West
+        if x < self.n-1 and y < self.n-1 and self.board[x-1][y-1] == -1 * p:
+            return
+        # West
+        if x < self.n-1 and self.board[x-1][y] == -1 * p:
+            return
+        # North-West
+        if x < self.n-1 and y < self.n-1 and self.board[x-1][y-1] == -1 * p:
+            return
+
         return True
 
 
@@ -79,7 +90,7 @@ def main():
     #print(dummy_board())
 
     game = OthelloGame()
-    game.test_valid()
+    #game.test_valid()
     return
 
 
