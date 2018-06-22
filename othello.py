@@ -36,6 +36,7 @@ class OthelloGame:
         self.n = n
         self.board = init_board(n)
         self.score = {'Player1': 2, 'Player2': 2}
+        self.turn = 1
 
         return
 
@@ -46,40 +47,179 @@ class OthelloGame:
 
     def is_valid(self, x, y, p):
         # North
-        if x > 0 and self.board[x-1][y] == -1 * p:
-            return
+        if x > 1 and self.board[x-1][y] == -1 * p:
+            i = 2
+            while x-i > 0 and self.board[x-i][y] == -1 * p:
+                i += 1
+            if self.board[x-i][y] == p:
+                return True
+
         # North-East
-        if x > 0 and y < self.n-1 and self.board[x-1][y+1] == -1 * p:
-            return
+        if x > 1 and y < self.n-2 and self.board[x-1][y+1] == -1 * p:
+            i = 2
+            while x-i > 0 and y+i < self.n-1 and self.board[x-i][y+i] == -1 * p:
+                i += 1
+            if self.board[x-i][y+i] == p:
+                return True
+
         # East
-        if y < self.n-1 and self.board[x][y+1] == -1 * p:
-            return
+        if y < self.n-2 and self.board[x][y+1] == -1 * p:
+            i = 2
+            while y+i < self.n-1 and self.board[x][y+i] == -1 * p:
+                i += 1
+            if self.board[x][y+i] == p:
+                return True
+
         # South-East
-        if x < self.n-1 and y < self.n-1 and self.board[x+1][y+1] == -1 * p:
-            return
+        if x < self.n-2 and y < self.n-2 and self.board[x+1][y+1] == -1 * p:
+            i = 2
+            while x+i < self.n-1 and y+i < self.n-1 and self.board[x+i][y+i] == -1 * p:
+                i += 1
+            if self.board[x+i][y+i] == p:
+                return True
+
         # South
-        if x < self.n-1 and self.board[x][y-1] == -1 * p:
-            return
+        if x < self.n-2 and self.board[x+1][y] == -1 * p:
+            i = 2
+            while x+i < self.n-1 and self.board[x+i][y] == -1 * p:
+                i += 1
+            if self.board[x+i][y] == p:
+                return True
+
         # South-West
-        if x < self.n-1 and y < self.n-1 and self.board[x-1][y-1] == -1 * p:
-            return
+        if x < self.n-2 and y > 1 and self.board[x+1][y-1] == -1 * p:
+            i = 2
+            while x+i < self.n-1 and y-i > 0 and self.board[x+i][y-i] == -1 * p:
+                i += 1
+            if self.board[x+i][y-i] == p:
+                return True
+
         # West
-        if x < self.n-1 and self.board[x-1][y] == -1 * p:
-            return
+        if y > 1 and self.board[x][y-1] == -1 * p:
+            i = 2
+            while y-i > 0 and self.board[x][y-i] == -1 * p:
+                i += 1
+            if self.board[x][y-i] == p:
+                return True
+
         # North-West
-        if x < self.n-1 and y < self.n-1 and self.board[x-1][y-1] == -1 * p:
-            return
+        if x > 1 and y > 1 and self.board[x-1][y-1] == -1 * p:
+            i = 2
+            while self.board[x-i][y-i] == -1 * p:
+                i += 1
+            if self.board[x-i][y-i] == p:
+                return True
 
-        return True
+        return False
 
+    def put(self, x, y, p):
+        # North
+        if x > 1 and self.board[x-1][y] == -1 * p:
+            i = 2
+            while x-i > 0 and self.board[x-i][y] == -1 * p:
+                i += 1
+            if self.board[x-i][y] == p:
+                for k in range(1, i):
+                    self.board[x-k][y] = p
+
+        # North-East
+        if x > 1 and y < self.n-2 and self.board[x-1][y+1] == -1 * p:
+            i = 2
+            while x-i > 0 and y+i < self.n-1 and self.board[x-i][y+i] == -1 * p:
+                i += 1
+            if self.board[x-i][y+i] == p:
+                for k in range(1, i):
+                    self.board[x-k][y+k] = p
+
+        # East
+        if y < self.n-2 and self.board[x][y+1] == -1 * p:
+            i = 2
+            while y+i < self.n-1 and self.board[x][y+i] == -1 * p:
+                i += 1
+            if self.board[x][y+i] == p:
+                for k in range(1, i):
+                    self.board[x][y+k] = p
+
+        # South-East
+        if x < self.n-2 and y < self.n-2 and self.board[x+1][y+1] == -1 * p:
+            i = 2
+            while x+i < self.n-1 and y+i < self.n-1 and self.board[x+i][y+i] == -1 * p:
+                i += 1
+            if self.board[x+i][y+i] == p:
+                for k in range(1, i):
+                    self.board[x+k][y+k] = p
+
+        # South
+        if x < self.n-2 and self.board[x+1][y] == -1 * p:
+            i = 2
+            while x+i < self.n-1 and self.board[x+i][y] == -1 * p:
+                i += 1
+            if self.board[x+i][y] == p:
+                for k in range(1, i):
+                    self.board[x+k][y] = p
+
+        # South-West
+        if x < self.n-2 and y > 1 and self.board[x+1][y-1] == -1 * p:
+            i = 2
+            while x+i < self.n-1 and y-i > 0 and self.board[x+i][y-i] == -1 * p:
+                i += 1
+            if self.board[x+i][y-i] == p:
+                for k in range(1, i):
+                    self.board[x+k][y-k] = p
+
+        # West
+        if y > 1 and self.board[x][y-1] == -1 * p:
+            i = 2
+            while y-i > 0 and self.board[x][y-i] == -1 * p:
+                i += 1
+            if self.board[x][y-i] == p:
+                for k in range(1, i):
+                    self.board[x][y-k] = p
+
+        # North-West
+        if x > 1 and y > 1 and self.board[x-1][y-1] == -1 * p:
+            i = 2
+            while self.board[x-i][y-i] == -1 * p:
+                i += 1
+            if self.board[x-i][y-i] == p:
+                for k in range(1, i):
+                    self.board[x-k][y-k] = p
+
+    def switch_turn(self):
+        for x in range(0,self.n):
+            for y in range(0, self.n):
+                if self.is_valid(x, y, -1 * self.turn) == True:
+                    self.turn *= -1
+                    return True
+        for x in range(0, self.n):
+            for y in range(0, self.n):
+                if self.is_valid(x, y, -1 * self.turn) == True:
+                    return True
+        return False
+
+    def AI_1(self):
+        return NotImplementedError
+    def AI_2(self):
+        return NotImplementedError
+
+    def simulate(self):
+        while self.switch_turn() == True:
+            if self.turn == 1:
+                self.AI_1()
+            else:
+                self.AI_2()
+        return
 
     def test_valid(self):
         self.board = dummy_board()
+        print(self.board)
         assert (not self.is_valid(0, 0, 1))
         assert (not self.is_valid(7, 7, -1))
         assert (self.is_valid(5, 6, 1))
         assert (self.is_valid(5, 3, -1))
-
+        assert (self.is_valid(2, 4, 1))
+        assert (not self.is_valid(2, 5, -1))
+        assert (self.is_valid(2, 5, 1))
         return
 
 
@@ -90,7 +230,8 @@ def main():
     #print(dummy_board())
 
     game = OthelloGame()
-    #game.test_valid()
+    game.simulate()
+    game.test_valid()
     return
 
 
