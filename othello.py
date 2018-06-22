@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 
 def init_board(n=8):
@@ -46,6 +47,9 @@ class OthelloGame:
         return
 
     def is_valid(self, x, y, p):
+        if self.board[x][y]:
+            return False
+
         # North
         if x > 1 and self.board[x-1][y] == -1 * p:
             i = 2
@@ -119,7 +123,7 @@ class OthelloGame:
             while x-i > 0 and self.board[x-i][y] == -1 * p:
                 i += 1
             if self.board[x-i][y] == p:
-                for k in range(1, i):
+                for k in range(0, i):
                     self.board[x-k][y] = p
 
         # North-East
@@ -128,7 +132,7 @@ class OthelloGame:
             while x-i > 0 and y+i < self.n-1 and self.board[x-i][y+i] == -1 * p:
                 i += 1
             if self.board[x-i][y+i] == p:
-                for k in range(1, i):
+                for k in range(0, i):
                     self.board[x-k][y+k] = p
 
         # East
@@ -137,7 +141,7 @@ class OthelloGame:
             while y+i < self.n-1 and self.board[x][y+i] == -1 * p:
                 i += 1
             if self.board[x][y+i] == p:
-                for k in range(1, i):
+                for k in range(0, i):
                     self.board[x][y+k] = p
 
         # South-East
@@ -146,7 +150,7 @@ class OthelloGame:
             while x+i < self.n-1 and y+i < self.n-1 and self.board[x+i][y+i] == -1 * p:
                 i += 1
             if self.board[x+i][y+i] == p:
-                for k in range(1, i):
+                for k in range(0, i):
                     self.board[x+k][y+k] = p
 
         # South
@@ -155,7 +159,7 @@ class OthelloGame:
             while x+i < self.n-1 and self.board[x+i][y] == -1 * p:
                 i += 1
             if self.board[x+i][y] == p:
-                for k in range(1, i):
+                for k in range(0, i):
                     self.board[x+k][y] = p
 
         # South-West
@@ -164,7 +168,7 @@ class OthelloGame:
             while x+i < self.n-1 and y-i > 0 and self.board[x+i][y-i] == -1 * p:
                 i += 1
             if self.board[x+i][y-i] == p:
-                for k in range(1, i):
+                for k in range(0, i):
                     self.board[x+k][y-k] = p
 
         # West
@@ -173,7 +177,7 @@ class OthelloGame:
             while y-i > 0 and self.board[x][y-i] == -1 * p:
                 i += 1
             if self.board[x][y-i] == p:
-                for k in range(1, i):
+                for k in range(0, i):
                     self.board[x][y-k] = p
 
         # North-West
@@ -182,7 +186,7 @@ class OthelloGame:
             while self.board[x-i][y-i] == -1 * p:
                 i += 1
             if self.board[x-i][y-i] == p:
-                for k in range(1, i):
+                for k in range(0, i):
                     self.board[x-k][y-k] = p
 
     def switch_turn(self):
@@ -198,9 +202,22 @@ class OthelloGame:
         return False
 
     def AI_1(self):
-        return NotImplementedError
+        a = []
+        for x in range(0,self.n):
+            for y in range(0, self.n):
+                if self.is_valid(x, y, 1):
+                    a.append((x, y))
+        rng = random.choice(a)
+        self.put(rng[0], rng[1], 1)
+        
     def AI_2(self):
-        return NotImplementedError
+        a = []
+        for x in range(0,self.n):
+            for y in range(0, self.n):
+                if self.is_valid(x, y, -1):
+                    a.append((x, y))
+        rng = random.choice(a)
+        self.put(rng[0], rng[1], -1)
 
     def simulate(self):
         while self.switch_turn() == True:
@@ -208,7 +225,9 @@ class OthelloGame:
                 self.AI_1()
             else:
                 self.AI_2()
-        return
+            self.update_score()
+            print(self.board)
+        return self.score
 
     def test_valid(self):
         self.board = dummy_board()
@@ -226,12 +245,8 @@ class OthelloGame:
 
 
 def main():
-
-    #print(dummy_board())
-
     game = OthelloGame()
-    game.simulate()
-    game.test_valid()
+    print(game.simulate())
     return
 
 
