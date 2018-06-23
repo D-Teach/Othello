@@ -197,7 +197,7 @@ class OthelloGame:
                     return True
         for x in range(0, self.n):
             for y in range(0, self.n):
-                if self.is_valid(x, y, -1 * self.turn) == True:
+                if self.is_valid(x, y, self.turn) == True:
                     return True
         return False
 
