@@ -47,7 +47,7 @@ class OthelloGame:
         return
 
     def is_valid(self, x, y, p):
-        if self.board[x][y]:
+        if self.board[x][y] != 0:
             return False
 
         # North
@@ -209,7 +209,7 @@ class OthelloGame:
                     a.append((x, y))
         rng = random.choice(a)
         self.put(rng[0], rng[1], 1)
-        
+
     def AI_2(self):
         a = []
         for x in range(0,self.n):
