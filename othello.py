@@ -38,8 +38,12 @@ class OthelloGame:
         self.board = init_board(n)
         self.score = {'Player1': 2, 'Player2': 2}
         self.turn = 1
-
         return
+
+    def reset(self):
+        self.board = init_board(self.n)
+        self.score = {'Player1': 2, 'Player2': 2}
+        self.turn = 1
 
     def update_score(self):
         self.score['Player1'] = np.count_nonzero(self.board == 1)
@@ -219,15 +223,28 @@ class OthelloGame:
         rng = random.choice(a)
         self.put(rng[0], rng[1], -1)
 
-    def simulate(self):
+    def simulate(self, show=True):
         while self.switch_turn() == True:
             if self.turn == 1:
                 self.AI_1()
             else:
                 self.AI_2()
             self.update_score()
-            print(self.board)
+            if show:
+                print(self.board)
         return self.score
+
+    def simulate_many(self, amount):
+        wolfram = 0
+        andreas = 0
+        for _ in range(amount):
+            res = self.simulate(show=False)
+            if res['Player1'] > res['Player2']:
+                wolfram += 1
+            else:
+                andreas += 1
+            self.reset()
+        print("We've played ", amount," of games. Score: Wolfram ", wolfram, " - ", andreas, " Andreas")
 
     def test_valid(self):
         self.board = dummy_board()
@@ -246,7 +263,7 @@ class OthelloGame:
 
 def main():
     game = OthelloGame()
-    print(game.simulate())
+    print(game.simulate_many(1000))
     return
 
 
