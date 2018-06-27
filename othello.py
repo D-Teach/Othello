@@ -37,13 +37,13 @@ class OthelloGame:
         self.n = n
         self.board = init_board(n)
         self.score = {'Player1': 2, 'Player2': 2}
-        self.turn = 1
+        self.turn = random.choice([1, -1])
         return
 
     def reset(self):
         self.board = init_board(self.n)
         self.score = {'Player1': 2, 'Player2': 2}
-        self.turn = 1
+        self.turn = random.choice([1, -1])
 
     def update_score(self):
         self.score['Player1'] = np.count_nonzero(self.board == 1)
@@ -207,12 +207,17 @@ class OthelloGame:
 
     def AI_1(self):
         a = []
+        b = []
         for x in range(0,self.n):
             for y in range(0, self.n):
                 if self.is_valid(x, y, 1):
                     a.append((x, y))
-        rng = random.choice(a)
-        self.put(rng[0], rng[1], 1)
+                    b.append(self.place_check(x, y))
+        m = np.argmax(b)
+        p = a[m]
+        self.put(p[0], p[1], 1)
+
+
 
     def AI_2(self):
         a = []
@@ -233,6 +238,16 @@ class OthelloGame:
             if show:
                 print(self.board)
         return self.score
+
+    def place_check(self, x, y):
+        if (x is self.n-1 or x is 0) and (y is self.n-1 or y is 0):
+            return 100
+        elif (x > self.n-3 or x < 2) and (y > self.n-3 or y < 2):
+            return 0
+        elif (x is self.n-1 or x is 0) or (y is self.n-1 or y is 0):
+            return 80
+
+        return 5
 
     def simulate_many(self, amount):
         wolfram = 0
